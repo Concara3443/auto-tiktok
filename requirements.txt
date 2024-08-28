@@ -1,0 +1,6 @@
+pyinputplus
+pytube==15.0.0
+moviepy
+termcolor
+toml
+pathlib
