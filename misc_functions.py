@@ -46,7 +46,7 @@ def folder_file_create():
 
 def start():
     """Function handles intial start flow"""
-    print_avc()
+    print_logo()
     response = pyip.inputMenu(choices=["Single Video", "Multiple Videos",
                                 "Clear Temp Files", "Cancel"],
                                 numbered=True)
@@ -141,17 +141,15 @@ def video_exists(file_name, path):
         return False
 
 
-def print_avc():
+def print_logo():
     """Function print starting logo"""
-    avc = """
-   ▄████████  ▄█    █▄   ▄████████ 
-  ███    ███ ███    ███ ███    ███ 
-  ███    ███ ███    ███ ███    █▀  
-  ███    ███ ███    ███ ███        
-▀███████████ ███    ███ ███        
-  ███    ███ ███    ███ ███    █▄  
-  ███    ███ ███    ███ ███    ███ 
-  ███    █▀   ▀██████▀  ████████▀                                
+    guillermo = """
+   ___       _ _ _                           
+  / _ \_   _(_) | | ___ _ __ _ __ ___   ___  
+ / /_\/ | | | | | |/ _ \ '__| '_ ` _ \ / _ \ 
+/ /_\\| |_| | | | |  __/ |  | | | | | | (_) |
+\____/ \__,_|_|_|_|\___|_|  |_| |_| |_|\___/ 
+                                                                            
 """
-    colored_avc = colored(avc, color="blue")
+    colored_avc = colored(guillermo, color="blue")
     print(colored_avc)
