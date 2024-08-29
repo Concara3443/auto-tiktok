@@ -1,42 +1,54 @@
-"""Module downloads videos from youtube"""
+"""Módulo para descargar videos de YouTube utilizando pytubefix"""
 from pathlib import Path
-from pytube import YouTube
-import pytube
+from pytubefix import YouTube
 from misc_functions import clean_title, video_exists, paths
 from config_funcs import config_create
-
-#config = config_create(paths["config"])
+from pytubefix.cli import on_progress  # Para mostrar el progreso de la descarga
 
 def yt_downloader(urls, folder):
-    """Functions takes youtube URL and downloads the video"""
+    """Función que toma URLs de YouTube y descarga los videos usando pytubefix"""
     config = config_create(paths["config"])
     vid_downloaded = 0
-    if isinstance(urls, list) is False:
-        urls = list(urls.split(" "))
+    vid_title = ""
+
+    # Asegurar que urls sea una lista
+    if not isinstance(urls, list):
+        urls = urls.split()
 
     for url in urls:
         try:
-            vid = YouTube(url).streams.get_highest_resolution()
-        except pytube.exceptions.RegexMatchError:
-            continue
-        vid_title = clean_title(vid.title)
+            # Inicializar objeto YouTube con progreso de descarga
+            yt = YouTube(url, on_progress_callback=on_progress)
+            
+            # Obtener el stream de mayor resolución
+            ys = yt.streams.get_highest_resolution()
+            
+            # Obtener y limpiar el título del video
+            vid_title = clean_title(yt.title)
+            vid_filename_perm = f"{vid_title}-perm.mp4"
+            vid_filename_temp = f"{vid_title}-temp.mp4"
 
-        if video_exists(vid_title + "-perm.mp4", paths["temp_bottom"]):
-            print(f"Skipped downloading {vid_title} since it already exists!")
-            vid_downloaded = 0
-            continue
-        if video_exists(vid_title + "-perm.mp4", paths["temp_top"]):
-            print(f"Skipped downloading {vid_title} since it already exists!")
-            vid_downloaded = 0
-            continue
+            # Verificar si el video ya existe en las carpetas temporales
+            if video_exists(vid_filename_perm, paths["temp_bottom"]) or video_exists(vid_filename_perm, paths["temp_top"]):
+                print(f"Saltando la descarga de {vid_title} porque ya existe como '-perm'!")
+                vid_downloaded = 0
+                continue
+            if video_exists(vid_filename_temp, paths["temp_bottom"]) or video_exists(vid_filename_temp, paths["temp_top"]):
+                print(f"Saltando la descarga de {vid_title} porque ya existe como '-temp'!")
+                vid_downloaded = 0
+                continue
 
-        if config["save_bottom_video"] and folder == "bottom":
-            vid_title += "-perm"
-        else:
-            vid_title += "-temp"
+            # Modificar el nombre del archivo dependiendo del tipo de video
+            if config.get("save_bottom_video") and folder == "bottom":
+                vid_title += "-perm"
+            else:
+                vid_title += "-temp"
 
-        print("Downloading video...")
-        vid.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
-        vid_downloaded = 1
+            print(f"Descargando video {vid_title}...")
+            ys.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
+            vid_downloaded = 1
 
-    return (vid_downloaded, vid_title)
+        except Exception as e:
+            print(f"Falló la descarga del video {url}: {e}")
+
+    return vid_downloaded, vid_title if vid_downloaded else None
