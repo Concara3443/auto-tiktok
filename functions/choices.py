@@ -1,8 +1,8 @@
 """Module handles user choice"""
 import pyinputplus as pyip
-from youtube import yt_downloader
-from misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
-import editing
+from functions.youtube import yt_downloader
+from utils.misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
+import functions.editing as editing
 import os
 
 
@@ -26,6 +26,9 @@ def clear_temp_files():
     folder_clear(paths["temp_top"])
     print("Cleared all temp files!")
 
+def clear_video_files():
+    """Function clears all -final video files"""
+    folder_clear(paths["videos_final"])
 
 def multiple_vids():
     """Function handles multiple video flow"""
@@ -38,10 +41,17 @@ def multiple_vids():
     top_file_list = []
     bottom_file_list = []
     
-    for filename in os.listdir("videos_temp/top"):
+    # Obtener la ruta base (directorio 'auto-tiktok')
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    # Construir las rutas a las carpetas 'videos_temp/top' y 'videos_temp/bottom'
+    top_dir = os.path.join(base_dir, 'videos_temp', 'top')
+    bottom_dir = os.path.join(base_dir, 'videos_temp', 'bottom')
+
+    for filename in os.listdir(top_dir):
         top_file_list.append(filename[:-4])
 
-    for filename in os.listdir("videos_temp/bottom"):
+    for filename in os.listdir(bottom_dir):
         bottom_file_list.append(filename[:-4])
 
     for top_link in top_video_links:

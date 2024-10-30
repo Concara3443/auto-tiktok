@@ -47,7 +47,7 @@ def folder_file_create():
 def start():
     """Function handles intial start flow"""
     print_logo()
-    response = pyip.inputMenu(choices=["Single Video", "Multiple Videos", "Clear Temp Files", "Cancel"], numbered=True)
+    response = pyip.inputMenu(choices=["Single Video", "Multiple Videos", "Clear Temp Files", "Clear Video Files", "Get Top Videos", "Cancel"], numbered=True)
     clear()
 
     return response
@@ -141,7 +141,7 @@ def video_exists(file_name, path):
 
 def print_logo():
     """Function print starting logo"""
-    guillermo = """
+    guillermo = r"""
    ___       _ _ _                           
   / _ \_   _(_) | | ___ _ __ _ __ ___   ___  
  / /_\/ | | | | | |/ _ \ '__| '_ ` _ \ / _ \ 
