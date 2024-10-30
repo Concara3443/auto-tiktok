@@ -4,11 +4,10 @@ from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
 from misc_functions import video_exists, paths
 from config_funcs import config_create
 
-#config = config_create(paths["config"])
+config = config_create(paths["config"])
 
 def video_edit(top_vid, bottom_vid):
     """Function edits top and bottom video into one final file"""
-    config = config_create(paths["config"])
 
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
         top_vid = list(top_vid.split(" "))
@@ -20,16 +19,25 @@ def video_edit(top_vid, bottom_vid):
         if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
             print(f"Skipped rendering {value} since it already exists!")
             continue
+
+        if value == "None":
+            continue
+        
         top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
-        bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid)}.mp4")
+        
+        bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
+        if not bottom_vid_filtered:
+            print("No valid bottom videos available!")
+            continue
+
+        bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
         bottom_clip_edit = bottom_clip
 
         if config["mute_bottom_video"]:
             bottom_clip_edit = bottom_clip.without_audio()
         bottom_clip_edit = trim_bottom_to_top(top_clip, bottom_clip_edit)
 
-        combined = clips_array([[top_clip],
-                                [bottom_clip_edit]])
+        combined = clips_array([[top_clip], [bottom_clip_edit]])
         clips = trim_video(combined)
 
         for i, clip in enumerate(clips):

@@ -17,8 +17,7 @@ def yt_downloader(urls, folder):
 
     for url in urls:
         try:
-            # Inicializar objeto YouTube con progreso de descarga
-            yt = YouTube(url, on_progress_callback=on_progress)
+            yt = YouTube(url, "MWEB", on_progress_callback=on_progress)
             
             # Obtener el stream de mayor resolución
             ys = yt.streams.get_highest_resolution()
@@ -38,8 +37,7 @@ def yt_downloader(urls, folder):
                 vid_downloaded = 0
                 continue
 
-            # Modificar el nombre del archivo dependiendo del tipo de video
-            if config.get("save_bottom_video") and folder == "bottom":
+            if folder == "bottom":
                 vid_title += "-perm"
             else:
                 vid_title += "-temp"
