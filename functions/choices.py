@@ -28,7 +28,8 @@ def clear_temp_files():
 
 def clear_video_files():
     """Function clears all -final video files"""
-    folder_clear(paths["videos_final"])
+    for file in os.listdir(paths["videos_final"]):
+        os.remove(os.path.join(paths["videos_final"], file))
 
 def multiple_vids():
     """Function handles multiple video flow"""
