@@ -3,6 +3,7 @@ import pyinputplus as pyip
 from youtube import yt_downloader
 from misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
 import editing
+import os
 
 
 def single_vid():
@@ -36,14 +37,18 @@ def multiple_vids():
 
     top_file_list = []
     bottom_file_list = []
+    
+    for filename in os.listdir("videos_temp/top"):
+        top_file_list.append(filename[:-4])
 
-    input("Enter YT links into .txt files\nRemember 1 link per line!\nPress enter to continue")
-    clear()
+    for filename in os.listdir("videos_temp/bottom"):
+        bottom_file_list.append(filename[:-4])
 
     for top_link in top_video_links:
         downloads, top_video = yt_downloader(top_link, "top")
         print(f"Downloaded {downloads} top videos!")
         top_file_list.append(top_video)
+
     for bottom_link in bottom_video_links:
         downloads, bottom_video = yt_downloader(bottom_link, "bottom")
         print(f"Downloaded {downloads} bottom videos!")
