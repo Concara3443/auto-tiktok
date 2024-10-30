@@ -1,6 +1,9 @@
 pyinputplus
 pytube==15.0.0
+pytubefix
 moviepy
 termcolor
 toml
 pathlib
+google-api-python-client
+python-dotenv
