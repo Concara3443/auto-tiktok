@@ -1,14 +1,14 @@
 from googleapiclient.discovery import build
+from dotenv import load_dotenv
 import re
+import os
+load_dotenv()
 
-# Tu clave de API de YouTube
-api_key = 'AIzaSyCePCgJSv_CneuqN6HBd_xqjiIcs0VLB00'
+api_key = os.getenv('YOUTUBE_API_KEY')
 
-# Crear un cliente para la API de YouTube
 youtube = build('youtube', 'v3', developerKey=api_key)
 
 def obtener_videos_en_tendencia(region_code='ES', max_results=50):
-    # Llamada a la API para obtener los videos en tendencia
     request = youtube.videos().list(
         part='snippet',
         chart='mostPopular',
@@ -17,7 +17,6 @@ def obtener_videos_en_tendencia(region_code='ES', max_results=50):
     )
     response = request.execute()
 
-    # Obtener los enlaces de los videos
     videos = response.get('items', [])
     enlaces = []
     for video in videos:
