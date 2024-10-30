@@ -26,7 +26,7 @@ def obtener_videos_en_tendencia(region_code='ES', max_results=50):
     
     return enlaces
 
-def guardar_enlaces_en_archivo(enlaces, archivo='top_video_links.txt'):
+def guardar_enlaces_en_archivo(enlaces, archivo='text_files/top_video_links.txt'):
     with open(archivo, 'w', encoding='utf-8') as file:
         for enlace in enlaces:
             file.write(f"{enlace}\n")
