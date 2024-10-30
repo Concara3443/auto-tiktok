@@ -5,14 +5,18 @@ import re
 import pyinputplus as pyip
 from termcolor import colored
 
-paths = {"bottom_video_links": Path("text_files", "bottom_video_links.txt"),
-         "top_video_links": Path("text_files", "top_video_links.txt"),
-         "config": Path("text_files", "config.toml"),
-         "videos_final": Path("videos_final"),
-         "temp_top": Path("videos_temp", "top"),
-         "temp_bottom": Path("videos_temp", "bottom"),
-         "text_files": Path("text_files"),
-         "videos_temp": Path("videos_temp")}
+base_dir = Path(__file__).resolve().parent.parent
+
+paths = {
+    "bottom_video_links": base_dir / "text_files" / "bottom_video_links.txt",
+    "top_video_links": base_dir / "text_files" / "top_video_links.txt",
+    "config": base_dir / "text_files" / "config.toml",
+    "videos_final": base_dir / "videos_final",
+    "temp_top": base_dir / "videos_temp" / "top",
+    "temp_bottom": base_dir / "videos_temp" / "bottom",
+    "text_files": base_dir / "text_files",
+    "videos_temp": base_dir / "videos_temp"
+}
 
 def folder_file_create():
     """Function creates all neccesary folders and files for the project"""
