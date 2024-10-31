@@ -6,7 +6,7 @@ from functions.config_funcs import config_create
 
 config = config_create(paths["config"])
 
-def video_edit(top_vid, bottom_vid):
+def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
 
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
@@ -21,6 +21,7 @@ def video_edit(top_vid, bottom_vid):
             continue
 
         if value == "None":
+            print("No valid top videos available!")
             continue
         
         top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
