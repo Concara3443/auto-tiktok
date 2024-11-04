@@ -14,42 +14,58 @@ def video_edit(top_vid: list, bottom_vid: list):
         bottom_vid = list(bottom_vid.split(" "))
 
     for value in top_vid:
-        value = str(value)
-        final_name = value.replace("-temp", "")
-        if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
-            print(f"Skipped rendering {value} since it already exists!")
-            continue
+        try:
+            value = str(value)
+            final_name = value.replace("-temp", "")
+            if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
+                print(f"Skipped rendering {value} since it already exists!")
+                continue
 
-        if value == "None":
-            print("No valid top videos available!")
-            continue
-        
-        top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
-        
-        bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
-        if not bottom_vid_filtered:
-            print("No valid bottom videos available!")
-            continue
+            if value == "None":
+                print("No valid top videos available!")
+                continue
 
-        bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
-        bottom_clip_edit = bottom_clip
+            top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
 
-        if config["mute_bottom_video"]:
-            bottom_clip_edit = bottom_clip.without_audio()
-        bottom_clip_edit = trim_bottom_to_top(top_clip, bottom_clip_edit)
+            bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
+            if not bottom_vid_filtered:
+                print("No valid bottom videos available!")
+                continue
 
-        combined = clips_array([[top_clip], [bottom_clip_edit]])
-        clips = trim_video(combined)
+            # Find bottom videos longer than top video
+            suitable_bottom_vids = []
+            for bottom_value in bottom_vid_filtered:
+                bottom_clip_candidate = VideoFileClip(f"./videos_temp/bottom/{bottom_value}.mp4")
+                if bottom_clip_candidate.duration >= top_clip.duration:
+                    suitable_bottom_vids.append(bottom_value)
+                bottom_clip_candidate.close()
 
-        for i, clip in enumerate(clips):
-            clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
-            clip.close()
-        print(f"\nExported {len(clips)} video clips!")
-        print("Find them in the 'videos_final' folder")
-        combined.close()
-        bottom_clip.close()
-        top_clip.close()
-        bottom_clip_edit.close()
+            if not suitable_bottom_vids:
+                print("No bottom videos longer than the top video available!")
+                continue
+
+            bottom_choice = random.choice(suitable_bottom_vids)
+            bottom_clip = VideoFileClip(f"./videos_temp/bottom/{bottom_choice}.mp4")
+            bottom_clip_edit = bottom_clip
+
+            if config["mute_bottom_video"]:
+                bottom_clip_edit = bottom_clip.without_audio()
+            bottom_clip_edit = trim_bottom_to_top(top_clip, bottom_clip_edit)
+
+            combined = clips_array([[top_clip], [bottom_clip_edit]])
+            clips = trim_video(combined)
+
+            for i, clip in enumerate(clips):
+                clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
+                clip.close()
+            print(f"\nExported {len(clips)} video clips!")
+            print("Find them in the 'videos_final' folder")
+            combined.close()
+            bottom_clip.close()
+            top_clip.close()
+            bottom_clip_edit.close()
+        except Exception as e:
+            print(f"An error occurred while processing {value}: {e}")
 
 
 def trim_video(video: CompositeVideoClip):
