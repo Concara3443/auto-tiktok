@@ -9,7 +9,7 @@ config = config_create(paths["config"])
 def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
 
-    if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
+    if not isinstance(top_vid, list) or not isinstance(bottom_vid, list):
         top_vid = list(top_vid.split(" "))
         bottom_vid = list(bottom_vid.split(" "))
 
@@ -66,13 +66,18 @@ def trim_video(video: CompositeVideoClip):
     while True:
         end = trim_math(int(video.duration), subclip_start)
         if end == int(video.duration):
-            trimed_video = video.subclip(subclip_start, end)
-            clips.append(trimed_video)
+            try:
+                trimed_video = video.subclip(subclip_start, end)
+                clips.append(trimed_video)
+            except OSError as e:
+                print(f"Error al leer el archivo de video {video}: {e}")
             break
-        trimed_video = video.subclip(subclip_start, end)
-        subclip_start = end
-
-        clips.append(trimed_video)
+        try:
+            trimed_video = video.subclip(subclip_start, end)
+            subclip_start = end
+            clips.append(trimed_video)
+        except OSError as e:
+            print(f"Error al leer el archivo de video {video}: {e}")
     return clips
 
 
