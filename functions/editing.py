@@ -1,7 +1,7 @@
 """Module edits all videos into one file"""
 import random
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
-from misc_functions import video_exists, paths
+from functions.misc_functions import video_exists, paths
 from functions.config_funcs import config_create
 
 config = config_create(paths["config"])
