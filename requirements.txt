@@ -51,4 +51,4 @@ undetected-chromedriver @ git+https://github.com/ultrafunkamsterdam/undetected-c
 urllib3
 websockets
 wsproto==1.2.0
-zipp==3.17.0
+zipp==3.19.1
