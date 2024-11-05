@@ -226,7 +226,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
 	for j in r.json()["infos"]:
 		if j["creationID"] == creation_id:
 			if j["tasks"][0]["status_msg"] == "Y project task init" or j["tasks"][0]["status_msg"] == "Success":
-				print("[+] Video uploaded successfully.")
+				print(f"[+] Video {title} uploaded successfully.")
 				return True
 			print(f"[-] Video could not be uploaded: {j['tasks'][0]['status_msg']}")
 			return False
