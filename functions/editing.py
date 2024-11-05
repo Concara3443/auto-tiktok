@@ -58,8 +58,8 @@ def video_edit(top_vid: list, bottom_vid: list):
             top_clip.close()
             bottom_clip_edit.close()
         except Exception as e:
-            print(f"Ocurrió un error al procesar {value}: {e}")
-            print("Saltando este video y continuando con el siguiente.")
+            print(f"An error ocurred processing {value}: {e}")
+            print("Skkiping to next video...")
             continue
 
 def trim_video(video: CompositeVideoClip):

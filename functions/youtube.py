@@ -29,11 +29,11 @@ def yt_downloader(urls, folder):
 
             # Verificar si el video ya existe en las carpetas temporales
             if video_exists(vid_filename_perm, paths["temp_bottom"]) or video_exists(vid_filename_perm, paths["temp_top"]):
-                print(f"Saltando la descarga de {vid_title} porque ya existe como '-perm'!")
+                print(f"Skipping the download of {vid_title} because already exsists as '-perm'!")
                 vid_downloaded = 0
                 continue
             if video_exists(vid_filename_temp, paths["temp_bottom"]) or video_exists(vid_filename_temp, paths["temp_top"]):
-                print(f"Saltando la descarga de {vid_title} porque ya existe como '-temp'!")
+                print(f"Skipping the download of {vid_title} because already exsists as '-temp'!")
                 vid_downloaded = 0
                 continue
 
@@ -42,11 +42,11 @@ def yt_downloader(urls, folder):
             else:
                 vid_title += "-temp"
 
-            print(f"Descargando video {vid_title}...")
+            print(f"Downloading video {vid_title}...")
             ys.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
             vid_downloaded = 1
 
         except Exception as e:
-            print(f"Falló la descarga del video {url}: {e}")
+            print(f"An error ocurred downloading {url}: {e}")
 
     return vid_downloaded, vid_title if vid_downloaded else None
