@@ -49,10 +49,20 @@ def video_edit(top_vid: list, bottom_vid: list):
                 # aqui
                 print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
-                tiktok.upload_video("clipps", f"{final_name}-PT{i + 1}.mp4", vidName)
                 
-            print(f"\nExported {len(clips)} video clips!")
-            print("Find them in the 'videos_final' folder")
+                sched = 0
+                # sched += min((i + 1) * 1800, 864000)
+                
+                # if sched == 864000:
+                #     sched = 0
+
+                tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName, sched)
+                
+            print(f"\nExported and uploaded {len(clips)} video clips!")
+            # hours, remainder = divmod(sched, 3600)
+            # minutes, seconds = divmod(remainder, 60)
+            # days, hours = divmod(hours, 24)
+            # print(f"Last video programmed to upload in {days} days, {hours} hours, and {minutes} minutes\n")
             combined.close()
             bottom_clip.close()
             top_clip.close()
