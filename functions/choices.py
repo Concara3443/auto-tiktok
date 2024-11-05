@@ -42,10 +42,7 @@ def multiple_vids():
     top_file_list = []
     bottom_file_list = []
     
-    # Obtener la ruta base (directorio 'auto-tiktok')
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-    # Construir las rutas a las carpetas 'videos_temp/top' y 'videos_temp/bottom'
     top_dir = os.path.join(base_dir, 'videos_temp', 'top')
     bottom_dir = os.path.join(base_dir, 'videos_temp', 'bottom')
 
