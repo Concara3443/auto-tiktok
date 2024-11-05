@@ -1,7 +1,7 @@
 """Module handles user choice"""
 import pyinputplus as pyip
 from functions.youtube import yt_downloader
-from utils.misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
+from functions.misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
 import functions.editing as editing
 import os
 

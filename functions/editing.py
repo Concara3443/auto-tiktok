@@ -1,15 +1,16 @@
 """Module edits all videos into one file"""
 import random
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
-from utils.misc_functions import video_exists, paths
+from functions.misc_functions import video_exists, paths
 from functions.config_funcs import config_create
+from functions.tiktok_uploader import tiktok
 
 config = config_create(paths["config"])
 
 def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
-
-    if not isinstance(top_vid, list) or not isinstance(bottom_vid, list):
+    print("Editing videos...")
+    if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
         top_vid = list(top_vid.split(" "))
         bottom_vid = list(bottom_vid.split(" "))
 
@@ -24,28 +25,15 @@ def video_edit(top_vid: list, bottom_vid: list):
             if value == "None":
                 print("No valid top videos available!")
                 continue
-
+            
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
-
+            
             bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
             if not bottom_vid_filtered:
                 print("No valid bottom videos available!")
                 continue
 
-            # Find bottom videos longer than top video
-            suitable_bottom_vids = []
-            for bottom_value in bottom_vid_filtered:
-                bottom_clip_candidate = VideoFileClip(f"./videos_temp/bottom/{bottom_value}.mp4")
-                if bottom_clip_candidate.duration >= top_clip.duration:
-                    suitable_bottom_vids.append(bottom_value)
-                bottom_clip_candidate.close()
-
-            if not suitable_bottom_vids:
-                print("No bottom videos longer than the top video available!")
-                continue
-
-            bottom_choice = random.choice(suitable_bottom_vids)
-            bottom_clip = VideoFileClip(f"./videos_temp/bottom/{bottom_choice}.mp4")
+            bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
             bottom_clip_edit = bottom_clip
 
             if config["mute_bottom_video"]:
@@ -58,6 +46,11 @@ def video_edit(top_vid: list, bottom_vid: list):
             for i, clip in enumerate(clips):
                 clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
                 clip.close()
+                # aqui
+                print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
+                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
+                tiktok.upload_video("clipps", f"{final_name}-PT{i + 1}.mp4", vidName)
+                
             print(f"\nExported {len(clips)} video clips!")
             print("Find them in the 'videos_final' folder")
             combined.close()
@@ -65,8 +58,9 @@ def video_edit(top_vid: list, bottom_vid: list):
             top_clip.close()
             bottom_clip_edit.close()
         except Exception as e:
-            print(f"An error occurred while processing {value}: {e}")
-
+            print(f"Ocurrió un error al procesar {value}: {e}")
+            print("Saltando este video y continuando con el siguiente.")
+            continue
 
 def trim_video(video: CompositeVideoClip):
     """Function trims video to fit certain length"""
@@ -82,18 +76,13 @@ def trim_video(video: CompositeVideoClip):
     while True:
         end = trim_math(int(video.duration), subclip_start)
         if end == int(video.duration):
-            try:
-                trimed_video = video.subclip(subclip_start, end)
-                clips.append(trimed_video)
-            except OSError as e:
-                print(f"Error al leer el archivo de video {video}: {e}")
-            break
-        try:
             trimed_video = video.subclip(subclip_start, end)
-            subclip_start = end
             clips.append(trimed_video)
-        except OSError as e:
-            print(f"Error al leer el archivo de video {video}: {e}")
+            break
+        trimed_video = video.subclip(subclip_start, end)
+        subclip_start = end
+
+        clips.append(trimed_video)
     return clips
 
 
