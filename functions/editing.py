@@ -46,7 +46,6 @@ def video_edit(top_vid: list, bottom_vid: list):
             for i, clip in enumerate(clips):
                 clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
                 clip.close()
-                # aqui
                 print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
                 
