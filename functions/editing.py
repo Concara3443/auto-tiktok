@@ -58,10 +58,11 @@ def video_edit(top_vid: list, bottom_vid: list):
                 tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName, sched)
                 
             print(f"\nExported and uploaded {len(clips)} video clips!")
-            # hours, remainder = divmod(sched, 3600)
-            # minutes, seconds = divmod(remainder, 60)
-            # days, hours = divmod(hours, 24)
-            # print(f"Last video programmed to upload in {days} days, {hours} hours, and {minutes} minutes\n")
+            if sched != 0:
+                hours, remainder = divmod(sched, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                days, hours = divmod(hours, 24)
+                print(f"Last video programmed to upload in {days} days, {hours} hours, and {minutes} minutes\n")
             combined.close()
             bottom_clip.close()
             top_clip.close()
