@@ -222,7 +222,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
 	r = session.get(url)
 	if not assert_success(url, r):
 		return False
-	print(r.json()["infos"])
+	# print(r.json()["infos"])
 	for j in r.json()["infos"]:
 		if j["creationID"] == creation_id:
 			if j["tasks"][0]["status_msg"] == "Y project task init" or j["tasks"][0]["status_msg"] == "Success":
