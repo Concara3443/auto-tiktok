@@ -51,7 +51,7 @@ def folder_file_create():
 def start():
     """Function handles intial start flow"""
     print_logo()
-    response = pyip.inputMenu(choices=["Single Video", "Multiple Videos", "Clear Temp Files", "Clear Video Files", "Get Top Videos", "Cancel"], numbered=True)
+    response = pyip.inputMenu(choices=["Single Video", "Multiple Videos", "Clear Temp Files", "Clear Video Files", "Get Top Videos", "Get Videos from Playlist", "Cancel"], numbered=True)
     clear()
 
     return response

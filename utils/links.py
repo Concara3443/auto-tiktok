@@ -26,6 +26,23 @@ def get_trending_videos(region_code='ES', max_results=50):
     
     return links
 
+def get_playlist_videos(playlist_id, max_results=50):
+    request = youtube.playlistItems().list(
+        part='snippet',
+        playlistId=playlist_id,
+        maxResults=max_results
+    )
+    response = request.execute()
+
+    videos = response.get('items', [])
+    links = []
+    for video in videos:
+        video_id = video['snippet']['resourceId']['videoId']
+        link = f"https://www.youtube.com/watch?v={video_id}"
+        links.append(link)
+    
+    return links
+
 def save_file(links, file_path='text_files/top_video_links.txt'):
     with open(file_path, 'w', encoding='utf-8') as file:
         for link in links:
