@@ -1,7 +1,7 @@
 """Módulo para descargar videos de YouTube utilizando pytubefix"""
 from pathlib import Path
 from pytubefix import YouTube
-from utils.misc_functions import clean_title, video_exists, paths
+from functions.misc_functions import clean_title, video_exists, paths
 from functions.config_funcs import config_create
 from pytubefix.cli import on_progress  # Para mostrar el progreso de la descarga
 
