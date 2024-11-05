@@ -3,54 +3,64 @@ import random
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
 from functions.misc_functions import video_exists, paths
 from functions.config_funcs import config_create
+from functions.tiktok_uploader import tiktok
 
 config = config_create(paths["config"])
 
 def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
-
+    print("Editing videos...")
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
         top_vid = list(top_vid.split(" "))
         bottom_vid = list(bottom_vid.split(" "))
 
     for value in top_vid:
-        value = str(value)
-        final_name = value.replace("-temp", "")
-        if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
-            print(f"Skipped rendering {value} since it already exists!")
+        try:
+            value = str(value)
+            final_name = value.replace("-temp", "")
+            if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
+                print(f"Skipped rendering {value} since it already exists!")
+                continue
+
+            if value == "None":
+                print("No valid top videos available!")
+                continue
+            
+            top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
+            
+            bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
+            if not bottom_vid_filtered:
+                print("No valid bottom videos available!")
+                continue
+
+            bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
+            bottom_clip_edit = bottom_clip
+
+            if config["mute_bottom_video"]:
+                bottom_clip_edit = bottom_clip.without_audio()
+            bottom_clip_edit = trim_bottom_to_top(top_clip, bottom_clip_edit)
+
+            combined = clips_array([[top_clip], [bottom_clip_edit]])
+            clips = trim_video(combined)
+
+            for i, clip in enumerate(clips):
+                clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
+                clip.close()
+                # aqui
+                print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
+                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
+                tiktok.upload_video("clipps", f"{final_name}-PT{i + 1}.mp4", vidName)
+                
+            print(f"\nExported {len(clips)} video clips!")
+            print("Find them in the 'videos_final' folder")
+            combined.close()
+            bottom_clip.close()
+            top_clip.close()
+            bottom_clip_edit.close()
+        except Exception as e:
+            print(f"Ocurrió un error al procesar {value}: {e}")
+            print("Saltando este video y continuando con el siguiente.")
             continue
-
-        if value == "None":
-            print("No valid top videos available!")
-            continue
-        
-        top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
-        
-        bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
-        if not bottom_vid_filtered:
-            print("No valid bottom videos available!")
-            continue
-
-        bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
-        bottom_clip_edit = bottom_clip
-
-        if config["mute_bottom_video"]:
-            bottom_clip_edit = bottom_clip.without_audio()
-        bottom_clip_edit = trim_bottom_to_top(top_clip, bottom_clip_edit)
-
-        combined = clips_array([[top_clip], [bottom_clip_edit]])
-        clips = trim_video(combined)
-
-        for i, clip in enumerate(clips):
-            clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
-            clip.close()
-        print(f"\nExported {len(clips)} video clips!")
-        print("Find them in the 'videos_final' folder")
-        combined.close()
-        bottom_clip.close()
-        top_clip.close()
-        bottom_clip_edit.close()
-
 
 def trim_video(video: CompositeVideoClip):
     """Function trims video to fit certain length"""
