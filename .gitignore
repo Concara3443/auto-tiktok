@@ -5,10 +5,11 @@ functions/tiktok_uploader/tiktok-signature/node_modules
 functions/CookiesDir/tiktok_session-*
 
 # Video links
-*.txt
-
-text_files/top_video_links.txt
-text_files/bottom_video_links.txt
+bottom_video_links.txt
+top_video_links.txt
+*txt
+!requirements.txt
+!hashtags.txt
 
 # Multimedia files
 *.mp3
