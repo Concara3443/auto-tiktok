@@ -54,16 +54,19 @@ def video_edit(top_vid: list, bottom_vid: list):
                 # if sched == 864000:
                 #     sched = 0
 
-                hastags = file_read(paths["hastags"])
-                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1} "
-                selected_hastags = []
-                while len(vidName) < 2200 and hastags:
-                    hashtag = random.choice(hastags)
-                    if len(vidName) + len(hashtag) + 1 > 2200: 
-                        break
-                    selected_hastags.append(hashtag)
-                    vidName += " " + hashtag
-                    hastags.remove(hashtag)
+                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
+
+                if config["hastags"]:
+                    vidName += " "
+                    hastags = file_read(paths["hastags"])
+                    selected_hastags = []
+                    while len(vidName) < 2200 and hastags:
+                        hashtag = random.choice(hastags)
+                        if len(vidName) + len(hashtag) + 1 > 2200: 
+                            break
+                        selected_hastags.append(hashtag)
+                        vidName += " " + hashtag
+                        hastags.remove(hashtag)
 
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
