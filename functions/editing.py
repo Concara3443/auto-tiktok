@@ -56,7 +56,7 @@ def video_edit(top_vid: list, bottom_vid: list):
 
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
 
-                if config["hastags"]:
+                if config["add_hastags"]:
                     vidName += " "
                     hastags = file_read(paths["hastags"])
                     selected_hastags = []
