@@ -66,7 +66,6 @@ def video_edit(top_vid: list, bottom_vid: list):
                             break
                         selected_hastags.append(hashtag)
                         vidName += " " + hashtag
-                        hastags.remove(hashtag)
 
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
