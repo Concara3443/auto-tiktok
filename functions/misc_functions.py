@@ -15,7 +15,8 @@ paths = {
     "temp_top": base_dir / "videos_temp" / "top",
     "temp_bottom": base_dir / "videos_temp" / "bottom",
     "text_files": base_dir / "text_files",
-    "videos_temp": base_dir / "videos_temp"
+    "videos_temp": base_dir / "videos_temp",
+    "hastags": base_dir / "text_files" / "hastags.txt"
 }
 
 def folder_file_create():

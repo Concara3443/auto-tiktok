@@ -1,7 +1,7 @@
 """Module edits all videos into one file"""
 import random
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
-from functions.misc_functions import video_exists, paths
+from functions.misc_functions import video_exists, paths, file_read
 from functions.config_funcs import config_create
 from functions.tiktok_uploader import tiktok
 
@@ -47,7 +47,6 @@ def video_edit(top_vid: list, bottom_vid: list):
                 clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
                 clip.close()
                 print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
-                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
                 
                 sched = 0
                 # sched += min((i + 1) * 1800, 864000)
@@ -55,6 +54,20 @@ def video_edit(top_vid: list, bottom_vid: list):
                 # if sched == 864000:
                 #     sched = 0
 
+                hastags = file_read(paths["hastags"])
+                vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1} "
+                selected_hastags = []
+                while len(vidName) < 2200 and hastags:
+                    hashtag = random.choice(hastags)
+                    if len(vidName) + len(hashtag) + 1 > 2200: 
+                        break
+                    selected_hastags.append(hashtag)
+                    vidName += " " + hashtag
+                    hastags.remove(hashtag)
+
+                if len(vidName) > 2200:
+                    vidName = vidName[:2197] + "..."
+                    
                 tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName, sched)
                 
             print(f"\nExported and uploaded {len(clips)} video clips!")
