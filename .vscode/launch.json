@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "debugpy",
+            "request": "launch",
+            "name": "Launch Main Program",
+            "program": "${workspaceFolder}/main.py",
+            "console": "externalTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
