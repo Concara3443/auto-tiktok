@@ -1,4 +1,5 @@
 max_clip_length = 180
+max_video_length = 3600
 mute_bottom_video = true
 save_bottom_video = true
 add_hastags = true

@@ -28,9 +28,15 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
             
+            if top_clip.duration > int(config["max_video_length"]):
+                print(f"Skipped {value} because it exceeds the maximum video length!")
+                top_clip.close()
+                continue
+            
             bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
             if not bottom_vid_filtered:
                 print("No valid bottom videos available!")
+                top_clip.close()
                 continue
             
             bottom_clip = None
@@ -44,6 +50,7 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             if bottom_clip is None or bottom_clip.duration < top_clip.duration:
                 print("No suitable bottom video found for synchronization!")
+                top_clip.close()
                 continue
             
             bottom_clip_edit = bottom_clip
