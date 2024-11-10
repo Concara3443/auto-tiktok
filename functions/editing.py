@@ -48,12 +48,6 @@ def video_edit(top_vid: list, bottom_vid: list):
                 clip.close()
                 print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
                 
-                sched = 0
-                # sched += min((i + 1) * 1800, 864000)
-                
-                # if sched == 864000:
-                #     sched = 0
-
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
 
                 if config["add_hastags"]:
@@ -68,16 +62,10 @@ def video_edit(top_vid: list, bottom_vid: list):
                         vidName += " " + hashtag
 
                 if len(vidName) > 2200:
-                    vidName = vidName[:2197] + "..."
-                    
-                tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName, sched)
+                    vidName = vidName[:2197] + "..."    
+                tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName)
                 
             print(f"\nExported and uploaded {len(clips)} video clips!")
-            if sched != 0:
-                hours, remainder = divmod(sched, 3600)
-                minutes, seconds = divmod(remainder, 60)
-                days, hours = divmod(hours, 24)
-                print(f"Last video programmed to upload in {days} days, {hours} hours, and {minutes} minutes\n")
             combined.close()
             bottom_clip.close()
             top_clip.close()
