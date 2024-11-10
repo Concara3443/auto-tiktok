@@ -4,16 +4,11 @@ functions/tiktok_uploader/tiktok-signature/node_modules
 # Cookies
 functions/CookiesDir/tiktok_session-*
 
-# Video links
-bottom_video_links.txt
-top_video_links.txt
-*txt
-!requirements.txt
-!hashtags.txt
-
-# Multimedia files
+# text files
+text_files
+videos_final
+videos_temp
 *.mp3
-*.mp4
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

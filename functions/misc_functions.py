@@ -23,7 +23,7 @@ def folder_file_create():
     """Function creates all neccesary folders and files for the project"""
     folders = [Path("videos_final"), Path("videos_temp"), Path("text_files")]
     sub_folders = [Path("top"), Path("bottom")]
-    files = [Path("top_video_links.txt"), Path("bottom_video_links.txt")]
+    files = [Path("top_video_links.txt"), Path("bottom_video_links.txt"), Path("hastags.txt")]
 
     for folder in folders:  # Creates base folders
         path = os.path.join(folder)
