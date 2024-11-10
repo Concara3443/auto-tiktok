@@ -1,5 +1,6 @@
 """Module edits all videos into one file"""
 import random
+import os
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
 from functions.misc_functions import video_exists, paths, file_read
 from functions.config_funcs import config_create
@@ -33,7 +34,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                 continue
             
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
-            
+
             if top_clip.duration > int(config["max_video_length"]):
                 print(Fore.RED + f"Skipped {value} because it exceeds the maximum video length!")
                 top_clip.close()
@@ -56,7 +57,6 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             if bottom_clip is None or bottom_clip.duration < top_clip.duration:
                 print(Fore.RED + "No suitable bottom video found for synchronization!")
-
                 top_clip.close()
                 continue
             
@@ -73,9 +73,10 @@ def video_edit(top_vid: list, bottom_vid: list):
             print(Fore.GREEN + f"Video {final_name} is divided into {num_parts} parts.")
             
             for i, clip in enumerate(clips):
-                clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
+                clip_path = f"./videos_final/{final_name}-PT{i + 1}.mp4"
+                clip.write_videofile(clip_path)
                 clip.close()
-                print(Fore.CYAN + f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
+                print(Fore.CYAN + f"Uploading {clip_path}")
                 
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
 
@@ -93,7 +94,10 @@ def video_edit(top_vid: list, bottom_vid: list):
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
                     
-                tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName)
+                tiktok.upload_video("clips", clip_path, vidName)
+                
+                os.remove(clip_path)
+                print(Fore.CYAN + f"Deleted {clip_path} after uploading.")
                 
             successful_uploads += 1
                 
