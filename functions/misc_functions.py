@@ -48,7 +48,6 @@ def folder_file_create():
             continue
 
 
-
 def start():
     """Function handles intial start flow"""
     print_logo()
@@ -62,6 +61,7 @@ def clear():  # Clears terminal
     """Function clears terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def folder_clear(path):
     """Function deletes all files in given path"""
     files = os.listdir(path)
@@ -73,6 +73,7 @@ def folder_clear(path):
         except PermissionError:
             print(f"Cannot delete {file} because it is being used by another process.")
             continue
+
 
 def check_folders():
     """Function check if temp files exist and clears them if True"""
