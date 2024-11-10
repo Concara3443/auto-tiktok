@@ -41,7 +41,7 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
             if not bottom_vid_filtered:
-              print(Fore.RED + "No valid bottom videos available!")
+                print(Fore.RED + "No valid bottom videos available!")
                 top_clip.close()
                 continue
             
