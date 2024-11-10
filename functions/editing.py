@@ -4,38 +4,44 @@ from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
 from functions.misc_functions import video_exists, paths, file_read
 from functions.config_funcs import config_create
 from functions.tiktok_uploader import tiktok
+from colorama import Fore, Style, init
 
 config = config_create(paths["config"])
+init(autoreset=True) # 
 
 def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
-    print("Editing videos...")
+    print(Fore.CYAN + "Editing videos...")
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
         top_vid = list(top_vid.split(" "))
         bottom_vid = list(bottom_vid.split(" "))
-
+    
+    total_videos = len(top_vid)
+    print(Fore.GREEN + f"Total number of videos to be uploaded: {total_videos}")
+    
+    successful_uploads = 0
     for value in top_vid:
         try:
             value = str(value)
             final_name = value.replace("-temp", "")
             if video_exists(final_name + "-PT1.mp4", paths["videos_final"]):
-                print(f"Skipped rendering {value} since it already exists!")
+                print(Fore.YELLOW + f"Skipped rendering {value} since it already exists!")
                 continue
 
             if value == "None":
-                print("No valid top videos available!")
+                print(Fore.RED + "No valid top videos available!")
                 continue
             
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
             
             if top_clip.duration > int(config["max_video_length"]):
-                print(f"Skipped {value} because it exceeds the maximum video length!")
+                print(Fore.RED + f"Skipped {value} because it exceeds the maximum video length!")
                 top_clip.close()
                 continue
             
             bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
             if not bottom_vid_filtered:
-                print("No valid bottom videos available!")
+              print(Fore.RED + "No valid bottom videos available!")
                 top_clip.close()
                 continue
             
@@ -49,7 +55,8 @@ def video_edit(top_vid: list, bottom_vid: list):
                 bottom_clip.close()
             
             if bottom_clip is None or bottom_clip.duration < top_clip.duration:
-                print("No suitable bottom video found for synchronization!")
+                print(Fore.RED + "No suitable bottom video found for synchronization!")
+
                 top_clip.close()
                 continue
             
@@ -61,11 +68,14 @@ def video_edit(top_vid: list, bottom_vid: list):
 
             combined = clips_array([[top_clip], [bottom_clip_edit]])
             clips = trim_video(combined)
-
+            
+            num_parts = len(clips)
+            print(Fore.GREEN + f"Video {final_name} is divided into {num_parts} parts.")
+            
             for i, clip in enumerate(clips):
                 clip.write_videofile(f"./videos_final/{final_name}-PT{i + 1}.mp4")
                 clip.close()
-                print(f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
+                print(Fore.CYAN + f"Uploading ./videos_final/{final_name}-PT{i + 1}.mp4")
                 
                 vidName = f"{final_name.replace('_', ' ')} - Part: {i + 1}"
 
@@ -85,15 +95,19 @@ def video_edit(top_vid: list, bottom_vid: list):
                     
                 tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName)
                 
-            print(f"\nExported and uploaded {len(clips)} video clips!")
+            successful_uploads += 1
+                
+            print(Fore.GREEN + f"\nExported and uploaded {len(clips)} video clips!")
             combined.close()
             bottom_clip.close()
             top_clip.close()
             bottom_clip_edit.close()
         except Exception as e:
-            print(f"An error occurred processing {value}: {e}")
-            print("Skipping to next video...")
+            print(Fore.RED + f"An error occurred processing {value}: {e}")
+            print(Fore.RED + "Skipping to next video...")
             continue
+    
+    print(Fore.GREEN + f"Total number of videos successfully uploaded: {successful_uploads}")
 
 def trim_video(video: CompositeVideoClip):
     """Function trims video to fit certain length"""
