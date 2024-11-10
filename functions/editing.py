@@ -74,7 +74,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                     hastags = file_read(paths["hastags"])
                     selected_hastags = []
                     while len(vidName) < 2200 and hastags:
-                        hashtag = random.choice(hastags)
+                        hashtag = random.choice(hastags).strip()
                         if len(vidName) + len(hashtag) + 1 > 2200: 
                             break
                         selected_hastags.append(hashtag)
