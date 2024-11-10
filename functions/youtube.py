@@ -1,4 +1,4 @@
-"""Módulo para descargar videos de YouTube utilizando pytubefix"""
+"""Module for downloading videos from YouTube using pytubefix"""
 from pathlib import Path
 from pytubefix import YouTube
 from functions.misc_functions import clean_title, video_exists, paths
