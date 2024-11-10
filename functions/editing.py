@@ -41,7 +41,8 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             bottom_vid_filtered = [vid for vid in bottom_vid if vid is not None]
             if not bottom_vid_filtered:
-                print(Fore.RED + "No valid bottom videos available!")
+              print(Fore.RED + "No valid bottom videos available!")
+                top_clip.close()
                 continue
             
             bottom_clip = None
@@ -55,6 +56,8 @@ def video_edit(top_vid: list, bottom_vid: list):
             
             if bottom_clip is None or bottom_clip.duration < top_clip.duration:
                 print(Fore.RED + "No suitable bottom video found for synchronization!")
+
+                top_clip.close()
                 continue
             
             bottom_clip_edit = bottom_clip
@@ -81,7 +84,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                     hastags = file_read(paths["hastags"])
                     selected_hastags = []
                     while len(vidName) < 2200 and hastags:
-                        hashtag = random.choice(hastags)
+                        hashtag = random.choice(hastags).strip()
                         if len(vidName) + len(hashtag) + 1 > 2200: 
                             break
                         selected_hastags.append(hashtag)
