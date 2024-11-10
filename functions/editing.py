@@ -32,8 +32,20 @@ def video_edit(top_vid: list, bottom_vid: list):
             if not bottom_vid_filtered:
                 print("No valid bottom videos available!")
                 continue
-
-            bottom_clip = VideoFileClip(f"./videos_temp/bottom/{random.choice(bottom_vid_filtered)}.mp4")
+            
+            bottom_clip = None
+            while bottom_vid_filtered:
+                bottom_choice = random.choice(bottom_vid_filtered)
+                bottom_clip = VideoFileClip(f"./videos_temp/bottom/{bottom_choice}.mp4")
+                if bottom_clip.duration >= top_clip.duration:
+                    break
+                bottom_vid_filtered.remove(bottom_choice)
+                bottom_clip.close()
+            
+            if bottom_clip is None or bottom_clip.duration < top_clip.duration:
+                print("No suitable bottom video found for synchronization!")
+                continue
+            
             bottom_clip_edit = bottom_clip
 
             if config["mute_bottom_video"]:
@@ -62,7 +74,8 @@ def video_edit(top_vid: list, bottom_vid: list):
                         vidName += " " + hashtag
 
                 if len(vidName) > 2200:
-                    vidName = vidName[:2197] + "..."    
+                    vidName = vidName[:2197] + "..."
+                    
                 tiktok.upload_video("clips", f"{final_name}-PT{i + 1}.mp4", vidName)
                 
             print(f"\nExported and uploaded {len(clips)} video clips!")
