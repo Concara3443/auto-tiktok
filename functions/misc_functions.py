@@ -62,15 +62,17 @@ def clear():  # Clears terminal
     """Function clears terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
 def folder_clear(path):
     """Function deletes all files in given path"""
     files = os.listdir(path)
     temp_files = check_file_ending(files)
 
     for file in temp_files:
-        os.remove(os.path.join(path, file))
-
+        try:
+            os.remove(os.path.join(path, file))
+        except PermissionError:
+            print(f"Cannot delete {file} because it is being used by another process.")
+            continue
 
 def check_folders():
     """Function check if temp files exist and clears them if True"""
