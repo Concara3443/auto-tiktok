@@ -54,10 +54,10 @@ def yt_downloader(urls, folder):
             else:
                 vid_title += "-temp"
 
-            print(Fore.GREEN + f"Downloading video {vid_title}...")
+            print(f"Downloading video {vid_title}...")
             ys.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
             vid_downloaded = 1
-            print(Fore.GREEN + f"Successfully downloaded {vid_title}.mp4")
+            print(Fore.GREEN + f"Successfully downloaded {vid_title}.mp4 as {'bottom' if folder == 'bottom' else 'top'} video!")
 
             with open(downloaded_ids_file, "a") as f:
                 f.write(f"{video_id}\n")

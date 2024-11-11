@@ -10,11 +10,9 @@ def single_vid():
     """Function handles single video flow"""
     url = pyip.inputURL(prompt="Enter top video URL: ")
     downloads, top_video = yt_downloader(url, "top")
-    print(f"Downloaded {downloads} top video!")
 
     url = pyip.inputURL(prompt="Enter bottom video URL: ")
     downloads, bottom_video = yt_downloader(url, "bottom")
-    print(f"Downloaded {downloads} bottom video!")
     clear()
 
     editing.video_edit(top_video, bottom_video)
@@ -54,12 +52,10 @@ def multiple_vids():
 
     for top_link in top_video_links:
         downloads, top_video = yt_downloader(top_link, "top")
-        print(f"Downloaded {downloads} top videos!")
         top_file_list.append(top_video)
 
     for bottom_link in bottom_video_links:
         downloads, bottom_video = yt_downloader(bottom_link, "bottom")
-        print(f"Downloaded {downloads} bottom videos!")
         bottom_file_list.append(bottom_video)
     clear()
     editing.video_edit(top_file_list, bottom_file_list)
