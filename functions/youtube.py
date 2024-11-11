@@ -27,13 +27,6 @@ def yt_downloader(urls, folder):
     for url in urls:
         try:
             yt = YouTube(url, "MWEB", on_progress_callback=on_progress)
-            video_id = yt.video_id
-
-            if video_id in downloaded_ids:
-                print(Fore.YELLOW + f"Skipping download of {yt.title} because it has already been downloaded.")
-                vid_downloaded = 0
-                continue
-            
             ys = yt.streams.get_highest_resolution()
             
             vid_title = clean_title(yt.title)
@@ -46,6 +39,13 @@ def yt_downloader(urls, folder):
                 continue
             if video_exists(vid_filename_temp, paths["temp_bottom"]) or video_exists(vid_filename_temp, paths["temp_top"]):
                 print(Fore.YELLOW + f"Skipping the download of {vid_title} because it already exists as '-temp'!")
+                vid_downloaded = 0
+                continue
+            
+            video_id = yt.video_id
+
+            if video_id in downloaded_ids:
+                print(Fore.YELLOW + f"Skipping download of {yt.title} because it has already been downloaded.")
                 vid_downloaded = 0
                 continue
 
