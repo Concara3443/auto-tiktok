@@ -29,7 +29,7 @@ def yt_downloader(urls, folder):
             yt = YouTube(url, "MWEB", on_progress_callback=on_progress)
             ys = yt.streams.get_highest_resolution()
             
-            if yt.length > int(config["max_video_length"]):
+            if yt.length >= int(config["max_video_length"]):
                 print(Fore.RED + f"Skipped {yt.title} because it exceeds the maximum video length!")
                 continue
 

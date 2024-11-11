@@ -35,7 +35,7 @@ async def video_edit(top_vid: list, bottom_vid: list):
             
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
 
-            if top_clip.duration > int(config["max_video_length"]):
+            if top_clip.duration >= int(config["max_video_length"]):
                 print(Fore.RED + f"Skipped {value} because it exceeds the maximum video length!")
                 top_clip.close()
                 continue
