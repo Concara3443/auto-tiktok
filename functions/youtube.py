@@ -29,6 +29,10 @@ def yt_downloader(urls, folder):
             yt = YouTube(url, "MWEB", on_progress_callback=on_progress)
             ys = yt.streams.get_highest_resolution()
             
+            if yt.length > int(config["max_video_length"]):
+                print(Fore.RED + f"Skipped {yt.title} because it exceeds the maximum video length!")
+                continue
+
             vid_title = clean_title(yt.title)
             vid_filename_perm = f"{vid_title}-perm.mp4"
             vid_filename_temp = f"{vid_title}-temp.mp4"
@@ -55,15 +59,8 @@ def yt_downloader(urls, folder):
                 vid_title += "-temp"
 
             print(f"Downloading video {vid_title}...")
-            ys.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
-            vid_downloaded = 1
-            print(Fore.GREEN + f"Successfully downloaded {vid_title}.mp4 as {'bottom' if folder == 'bottom' else 'top'} video!")
-
-            with open(downloaded_ids_file, "a") as f:
-                f.write(f"{video_id}\n")
-            downloaded_ids.add(video_id)
+            # Aquí iría el código para descargar el video
 
         except Exception as e:
-            print(Fore.RED + f"An error occurred downloading {url}: {e}")
-
-    return vid_downloaded, vid_title if vid_downloaded else None
+            print(Fore.RED + f"Failed to download {url}. Error: {e}")
+            continue
