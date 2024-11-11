@@ -2,6 +2,8 @@
 import os
 from pathlib import Path
 import re
+import msvcrt
+import time
 import pyinputplus as pyip
 from termcolor import colored
 
@@ -146,6 +148,14 @@ def video_exists(file_name, path):
     else:
         return False
 
+def wait_for_input(timeout):
+            start_time = time.time()
+            while True:
+                if msvcrt.kbhit():
+                    return True
+                if time.time() - start_time > timeout:
+                    return False
+                time.sleep(0.1)
 
 def print_logo():
     """Function print starting logo"""
