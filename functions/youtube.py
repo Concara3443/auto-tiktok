@@ -70,3 +70,4 @@ def yt_downloader(urls, folder):
         except Exception as e:
             print(Fore.RED + f"Failed to download {url}. Error: {e}")
             continue
+    return vid_downloaded, vid_title if vid_downloaded else None
