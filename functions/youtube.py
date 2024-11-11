@@ -9,10 +9,17 @@ from colorama import init, Fore, Style
 init(autoreset=True)
 
 def yt_downloader(urls, folder):
-    """Función que toma URLs de YouTube y descarga los videos usando pytubefix"""
+    """Function that takes YouTube URLs and downloads the videos using pytubefix, storing the IDs in a text file"""
     config = config_create(paths["config"])
     vid_downloaded = 0
     vid_title = ""
+    downloaded_ids_file = Path(paths["text_files"], "downloaded_videos.txt")
+
+    if downloaded_ids_file.exists():
+        with open(downloaded_ids_file, "r") as f:
+            downloaded_ids = set(line.strip() for line in f)
+    else:
+        downloaded_ids = set()
 
     if not isinstance(urls, list):
         urls = urls.split()
@@ -20,7 +27,6 @@ def yt_downloader(urls, folder):
     for url in urls:
         try:
             yt = YouTube(url, "MWEB", on_progress_callback=on_progress)
-            
             ys = yt.streams.get_highest_resolution()
             
             vid_title = clean_title(yt.title)
@@ -35,6 +41,13 @@ def yt_downloader(urls, folder):
                 print(Fore.YELLOW + f"Skipping the download of {vid_title} because it already exists as '-temp'!")
                 vid_downloaded = 0
                 continue
+            
+            video_id = yt.video_id
+
+            if video_id in downloaded_ids:
+                print(Fore.YELLOW + f"Skipping download of {yt.title} because it has already been downloaded.")
+                vid_downloaded = 0
+                continue
 
             if folder == "bottom":
                 vid_title += "-perm"
@@ -45,6 +58,10 @@ def yt_downloader(urls, folder):
             ys.download(output_path=Path(paths["videos_temp"], folder), filename=f"{vid_title}.mp4")
             vid_downloaded = 1
             print(Fore.GREEN + f"Successfully downloaded {vid_title}.mp4 as {'bottom' if folder == 'bottom' else 'top'} video!")
+
+            with open(downloaded_ids_file, "a") as f:
+                f.write(f"{video_id}\n")
+            downloaded_ids.add(video_id)
 
         except Exception as e:
             print(Fore.RED + f"An error occurred downloading {url}: {e}")
