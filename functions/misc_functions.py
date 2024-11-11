@@ -149,13 +149,13 @@ def video_exists(file_name, path):
         return False
 
 def wait_for_input(timeout):
-            start_time = time.time()
-            while True:
-                if msvcrt.kbhit():
-                    return True
-                if time.time() - start_time > timeout:
-                    return False
-                time.sleep(0.1)
+    start_time = time.time()
+    while True:
+        if msvcrt.kbhit():
+            return True
+        if time.time() - start_time > timeout:
+            return False
+        time.sleep(0.1)
 
 def print_logo():
     """Function print starting logo"""
