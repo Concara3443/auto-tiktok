@@ -150,6 +150,10 @@ def video_exists(file_name, path):
 
 def wait_for_input(timeout):
     start_time = time.time()
+    txt = f"Press any key to continue or wait {timeout} seconds"
+    print(colored(f"+{'-' * (len(txt) + 2)}+", 'red', 'on_white'))
+    print(colored(f"| {txt} |", 'red', 'on_white'))
+    print(colored(f"+{'-' * (len(txt) + 2)}+", 'red', 'on_white'))
     while True:
         if msvcrt.kbhit():
             return True
