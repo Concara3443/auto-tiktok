@@ -10,7 +10,7 @@ from colorama import Fore, Style, init
 config = config_create(paths["config"])
 init(autoreset=True) # 
 
-def video_edit(top_vid: list, bottom_vid: list):
+async def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
     print(Fore.CYAN + "Editing videos...")
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
@@ -94,7 +94,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
                     
-                tiktok.upload_video("clips", clip_path, vidName)
+                await tiktok.upload_video("clips", clip_path, vidName)
                 
                 os.remove(clip_path)
                 print(Fore.CYAN + f"Deleted {clip_path} after uploading.")
