@@ -2,7 +2,7 @@
 import pyinputplus as pyip
 from functions.youtube import yt_downloader
 from functions.misc_functions import clear, folder_clear, delete_dup_links, file_read, paths
-import functions.editing as editing
+from functions.editing import video_edit
 import os
 
 
@@ -15,7 +15,7 @@ def single_vid():
     downloads, bottom_video = yt_downloader(url, "bottom")
     clear()
 
-    editing.video_edit(top_video, bottom_video)
+    video_edit(top_video, bottom_video)
 
 
 def clear_temp_files():
@@ -58,4 +58,4 @@ def multiple_vids():
         downloads, bottom_video = yt_downloader(bottom_link, "bottom")
         bottom_file_list.append(bottom_video)
     clear()
-    editing.video_edit(top_file_list, bottom_file_list)
+    video_edit(top_file_list, bottom_file_list)

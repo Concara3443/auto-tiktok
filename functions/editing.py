@@ -4,13 +4,13 @@ import os
 from moviepy.editor import VideoFileClip, clips_array, CompositeVideoClip
 from functions.misc_functions import video_exists, paths, file_read
 from functions.config_funcs import config_create
-from functions.tiktok_uploader import tiktok
+from functions.tiktok_uploader.tiktok import upload_video
 from colorama import Fore, Style, init
 
 config = config_create(paths["config"])
 init(autoreset=True) # 
 
-async def video_edit(top_vid: list, bottom_vid: list):
+def video_edit(top_vid: list, bottom_vid: list):
     """Function edits top and bottom video into one final file"""
     print(Fore.CYAN + "Editing videos...")
     if isinstance(top_vid, list) is False or isinstance(bottom_vid, list) is False:
@@ -94,7 +94,7 @@ async def video_edit(top_vid: list, bottom_vid: list):
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
                     
-                await tiktok.upload_video("clips", clip_path, vidName)
+                upload_video("clips",f"{final_name}-PT{i + 1}.mp4", vidName)
                 
                 os.remove(clip_path)
                 print(Fore.CYAN + f"Deleted {clip_path} after uploading.")
