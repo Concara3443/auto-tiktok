@@ -30,7 +30,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                 continue
 
             if value == "None":
-                print(Fore.RED + "No valid top videos available!")
+                print(Fore.RED + "This video does not exist!")
                 continue
             
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
@@ -95,6 +95,8 @@ def video_edit(top_vid: list, bottom_vid: list):
                     vidName = vidName[:2197] + "..."
                     
                 upload_video("clips",f"{final_name}-PT{i + 1}.mp4", vidName)
+                
+                print(Fore.YELLOW + f"Upload {i + 1} of {num_parts} videos ({((i + 1) / num_parts) * 100:.2f}%)" if num_parts != 0 else "No parts to upload.")
                 
                 os.remove(clip_path)
                 print(Fore.CYAN + f"Deleted {clip_path} after uploading.")
