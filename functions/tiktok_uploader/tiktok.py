@@ -29,7 +29,8 @@ def login(login_name: str):
 		return session_cookie["value"]
 
 	browser = Browser.get()
-	response = browser.driver.get(os.getenv("TIKTOK_LOGIN_URL"))
+	# response = browser.driver.get(os.getenv("TIKTOK_LOGIN_URL"))
+	response = browser.driver.get("https://www.tiktok.com/login")
 
 	session_cookies = []
 	while not session_cookies:

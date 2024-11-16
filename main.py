@@ -1,8 +1,9 @@
 """Main program loop"""
 import sys
 import os
+from functions.tiktok_uploader.tiktok import login
 from functions.misc_functions import start, clear, folder_file_create, paths, wait_for_input
-from functions.choices import single_vid, clear_temp_files, clear_video_files, multiple_vids
+from functions.choices import clear_temp_files, clear_video_files, multiple_vids
 from utils.links import get_trending_videos, get_playlist_videos, save_file
 from functions.config_funcs import config_create
 
@@ -23,10 +24,9 @@ if config["automatic_mode"]:
 while True:
     startResp = start()
 
-    if startResp == "Single Video":
-        single_vid()
-        clear_temp_files()
-        clear()
+    if startResp == "Log new account":
+        name = input("Enter name: ")
+        login(name)
     elif startResp == "Multiple Videos":
         multiple_vids()
         clear_temp_files()
