@@ -36,7 +36,7 @@ def video_edit(top_vid: list, bottom_vid: list):
             top_clip = VideoFileClip(f"videos_temp/top/{value}.mp4")
 
             if top_clip.duration >= int(config["max_video_length"]):
-                print(Fore.RED + f"Skipped {value} because it exceeds the maximum video length!")
+                print(Fore.YELLOW + f"Skipped {value} because it exceeds the maximum video length!")
                 top_clip.close()
                 continue
             
@@ -96,22 +96,22 @@ def video_edit(top_vid: list, bottom_vid: list):
                     
                 upload_video("clips",f"{final_name}-PT{i + 1}.mp4", vidName)
                 
-                print(Fore.YELLOW + f"Uploaded {i + 1} of {num_parts} videos ({((i + 1) / num_parts) * 100:.2f}%)" if num_parts != 0 else "No parts to upload.")
+                print(Fore.CYAN + f"Uploaded {i + 1} of {num_parts} videos ({((i + 1) / num_parts) * 100:.2f}%)" if num_parts != 0 else "No parts to upload.")
                 
                 os.remove(clip_path)
-                print(Fore.CYAN + f"Deleted {clip_path} after uploading.")
+                print(Fore.GREEN + f"Deleted {clip_path} after uploading.")
                 
             successful_uploads += 1
                 
             print(Fore.GREEN + f"\nExported and uploaded {len(clips)} video clips!")
-            print(Fore.YELLOW + f"Total number of videos uploaded: {successful_uploads}/{total_videos} videos ({(successful_uploads / total_videos) * 100:.2f}%)" if total_videos != 0 else "No videos to upload.")
+            print(Fore.CYAN + f"Total number of videos uploaded: {successful_uploads}/{total_videos} videos ({(successful_uploads / total_videos) * 100:.2f}%)" if total_videos != 0 else "No videos to upload.")
             combined.close()
             bottom_clip.close()
             top_clip.close()
             bottom_clip_edit.close()
         except Exception as e:
             print(Fore.RED + f"An error occurred processing {value}: {e}")
-            print(Fore.RED + "Skipping to next video...")
+            print(Fore.YELLOW + "Skipping to next video...")
             continue
     
     print(Fore.GREEN + f"Total number of videos successfully uploaded: {successful_uploads}")

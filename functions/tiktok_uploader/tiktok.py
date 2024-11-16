@@ -65,7 +65,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
         print(Fore.YELLOW + "[WARNING]: Please login, tiktok datacenter id must be allocated, or may fail")
         dc_id = "useast2a"
     print(Fore.GREEN + "User successfully logged in.")
-    print(Fore.GREEN + f"Tiktok Datacenter Assigned: {dc_id}")
+    print(f"Tiktok Datacenter Assigned: {dc_id}")
     
     print(Fore.CYAN + "Uploading video...")
     # Parameter validation
@@ -110,7 +110,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
     print(Fore.CYAN + f"Project created with ID: {project_id}")
 
     video_id, session_key, upload_id, crcs, upload_host, store_uri, video_auth, aws_auth = upload_to_tiktok(video, session)
-    print(Fore.CYAN + f"Video uploaded with ID: {video_id}")
+    print(Fore.GREEN + f"Video uploaded with ID: {video_id}")
 
     url = f"https://{upload_host}/{store_uri}?uploadID={upload_id}&phase=finish&uploadmode=part"
     headers = {
