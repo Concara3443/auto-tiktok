@@ -59,3 +59,5 @@ def multiple_vids():
         bottom_file_list.append(bottom_video)
     clear()
     video_edit(top_file_list, bottom_file_list)
+    with open(os.path.join(base_dir, 'text_files', 'downloaded_videos.txt'), 'a') as f:
+        f.write("\n--- New Session ---\n")
