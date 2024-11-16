@@ -5,6 +5,19 @@ from functions.misc_functions import clear, folder_clear, delete_dup_links, file
 from functions.editing import video_edit
 import os
 
+
+def single_vid():
+    """Function handles single video flow"""
+    url = pyip.inputURL(prompt="Enter top video URL: ")
+    downloads, top_video = yt_downloader(url, "top")
+
+    url = pyip.inputURL(prompt="Enter bottom video URL: ")
+    downloads, bottom_video = yt_downloader(url, "bottom")
+    clear()
+
+    video_edit(top_video, bottom_video)
+
+
 def clear_temp_files():
     """Function clears all -temp video files"""
     folder_clear(paths["temp_bottom"])
