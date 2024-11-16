@@ -10,6 +10,7 @@ folder_file_create()  # Creates folders / files for videos (skips if they alread
 config = config_create(paths["config"])
 
 if config["automatic_mode"]:
+    clear_temp_files()
     trend_vids = get_trending_videos()
     save_file(trend_vids)
     multiple_vids()
