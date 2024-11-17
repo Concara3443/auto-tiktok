@@ -94,7 +94,7 @@ def video_edit(top_vid: list, bottom_vid: list):
                 if len(vidName) > 2200:
                     vidName = vidName[:2197] + "..."
                     
-                upload_video("clips",f"{final_name}-PT{i + 1}.mp4", vidName)
+                upload_video("esclips",f"{final_name}-PT{i + 1}.mp4", vidName)
                 
                 print(Fore.CYAN + f"Uploaded {i + 1} of {num_parts} videos ({((i + 1) / num_parts) * 100:.2f}%)" if num_parts != 0 else "No parts to upload.")
                 
