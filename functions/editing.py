@@ -17,8 +17,8 @@ def video_edit(top_vid: list, bottom_vid: list):
         top_vid = list(top_vid.split(" "))
         bottom_vid = list(bottom_vid.split(" "))
     
-    total_videos = len(top_vid)
-    print(Fore.GREEN + f"Total number of videos to be uploaded: {total_videos}")
+    non_none_top_vids = [vid for vid in top_vid if vid is not None]
+    print(Fore.GREEN + f"Total number of videos to be uploaded: {len(non_none_top_vids)}")
     
     successful_uploads = 0
     for value in top_vid:
@@ -104,7 +104,6 @@ def video_edit(top_vid: list, bottom_vid: list):
             successful_uploads += 1
                 
             print(Fore.GREEN + f"\nExported and uploaded {len(clips)} video clips!")
-            non_none_top_vids = [vid for vid in top_vid if vid is not None]
             print(Fore.CYAN + f"Total number of videos uploaded: {successful_uploads}/{len(non_none_top_vids)} videos ({(successful_uploads / len(non_none_top_vids)) * 100:.2f}%)" if len(non_none_top_vids) != 0 else "No videos to upload.")
             combined.close()
             bottom_clip.close()
