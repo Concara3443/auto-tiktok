@@ -40,6 +40,8 @@ def get_trending_videos(region_code='ES', max_results=50):
     return fetch_videos(request)
 
 def get_playlist_videos(playlist_id, max_results=50):
+    if 'list=' in playlist_id:
+        playlist_id = playlist_id.split('list=')[1].split('&')[0]
     request = youtube.playlistItems().list(
         part='snippet',
         playlistId=playlist_id,
