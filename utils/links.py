@@ -18,6 +18,18 @@ def fetch_videos(request):
         links.append(link)
     return links
 
+def search_video(query="", region_code='ES', max_results=50):
+    request = youtube.search().list(
+        part="snippet",
+        maxResults=max_results,
+        q=query,
+        regionCode=region_code, # https://www.iso.org/obp/ui/#search
+        safeSearch="none",
+        type="video",
+        videoDuration="short" # long +20min / medium 4-20min / short -4min
+    )
+    return fetch_videos(request)
+
 def get_trending_videos(region_code='ES', max_results=50):
     request = youtube.videos().list(
         part='snippet',
