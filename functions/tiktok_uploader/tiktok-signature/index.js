@@ -69,11 +69,18 @@ class Signer {
         ? route.abort()
         : route.continue();
     });
-
-    await this.page.goto(this.default_url, {
-      waitUntil: "networkidle",
-    });
-
+    
+    try {
+      await this.page.goto(this.default_url, {
+        waitUntil: "networkidle",
+        timeout: 30000, // 30 seconds timeout
+      });
+    } catch (error) {
+      console.error("Error navigating to the URL:", error);
+      // Skip the video or handle the error as needed
+      return;
+    }
+    
     let LOAD_SCRIPTS = ["signer.js", "webmssdk.js", "xbogus.js"];
     LOAD_SCRIPTS.forEach(async (script) => {
       await this.page.addScriptTag({
