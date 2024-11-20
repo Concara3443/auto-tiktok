@@ -9,7 +9,7 @@ class Config:
         "TIKTOK_BASE_URL": "https://www.tiktok.com/upload?lang=", 
     }
 
-    _EXCLUDE = ["#"]
+    _EXCLUDE = []
 
     _instance = None
 
