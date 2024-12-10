@@ -64,7 +64,7 @@ def upload_video(session_user, video, title, schedule_time=0, allow_comment=1, a
     if not dc_id:
         print(Fore.YELLOW + "[WARNING]: Please login, tiktok datacenter id must be allocated, or may fail")
         dc_id = "useast2a"
-    print(Fore.GREEN + "User successfully logged in.")
+    print(Fore.GREEN + f"User {session_user} successfully logged in.")
     print(f"Tiktok Datacenter Assigned: {dc_id}")
     
     print(Fore.CYAN + "Uploading video...")
