@@ -22,6 +22,8 @@ def clear_temp_files():
     """Function clears all -temp video files"""
     folder_clear(paths["temp_bottom"])
     folder_clear(paths["temp_top"])
+    for file in os.listdir(paths["videos_final"]):
+        os.remove(os.path.join(paths["videos_final"], file))
     print("Cleared all temp files!")
 
 def clear_video_files():
