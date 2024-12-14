@@ -2,7 +2,7 @@
 functions/tiktok_uploader/tiktok-signature/node_modules
 
 # Cookies
-functions/CookiesDir/tiktok_session-*
+functions/tiktok_uploader/tiktok_session-*.cookie
 
 # text files
 text_files
