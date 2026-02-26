@@ -36,7 +36,7 @@ pyee==8.2.2
 pyppeteer==1.0.2
 pyquery==2.0.0
 PySocks==1.7.1
-requests==2.32.2
+requests==2.32.4
 requests-auth-aws-sigv4==0.7
 requests-html==0.10.0
 selenium==4.17.2
